@@ -128,7 +128,9 @@ async function run(context, plugins) {
           env,
         });
         await push(options.repositoryUrl, { cwd, env });
-        await pushNotes(options.repositoryUrl, { cwd, env });
+        if (options.pushNotes) {
+          await pushNotes(options.repositoryUrl, { cwd, env });
+        }
         logger.success(
           `Add ${nextRelease.channel ? `channel ${nextRelease.channel}` : "default channel"} to tag ${
             nextRelease.gitTag
@@ -205,7 +207,9 @@ async function run(context, plugins) {
     await tag(nextRelease.gitTag, nextRelease.gitHead, { cwd, env });
     await addNote({ channels: [nextRelease.channel] }, nextRelease.gitHead, { cwd, env });
     await push(options.repositoryUrl, { cwd, env });
-    await pushNotes(options.repositoryUrl, { cwd, env });
+    if (options.pushNotes) {
+      await pushNotes(options.repositoryUrl, { cwd, env });
+    }
     logger.success(`Created tag ${nextRelease.gitTag}`);
   }
 
